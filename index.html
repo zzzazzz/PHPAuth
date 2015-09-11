@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>PHPAuth by PHPAuth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">PHPAuth</h1>
+      <h2 class="project-tagline">  PHPAuth is a secure PHP Authentication class that easily integrates into any site. </h2>
+      <a href="https://github.com/PHPAuth/PHPAuth" class="btn">View on GitHub</a>
+      <a href="https://github.com/PHPAuth/PHPAuth/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/PHPAuth/PHPAuth/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="phpauth" class="anchor" href="#phpauth" aria-hidden="true"><span class="octicon octicon-link"></span></a>PHPAuth</h1>
+
+<h2>
+<a id="what-is-it" class="anchor" href="#what-is-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is it</h2>
+
+<p>PHPAuth is a secure user authentication class for PHP websites, using a powerful password hashing system and attack blocking to keep your website and users secure.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Authentication by email and password combination</li>
+<li>Uses <a href="http://en.wikipedia.org/wiki/Bcrypt">bcrypt</a> to hash passwords, a secure algorithm that uses an expensive key setup phase</li>
+<li>Uses an individual 128 bit salt for each user, pulled from /dev/urandom, making rainbow tables useless</li>
+<li>Uses PHP's <a href="http://php.net/manual/en/book.pdo.php">PDO</a> database interface and uses prepared statements meaning an efficient system, resilient against SQL injection</li>
+<li>Blocks attackers by IP for any defined time after any amount of failed actions on the portal</li>
+<li>No plain text passwords are sent or stored by the system</li>
+<li>Integrates easily into most existing websites, and can be a great starting point for new projects</li>
+<li>Easy configuration of multiple system parameters</li>
+<li>Allows sending emails via SMTP or sendmail</li>
+<li>Blocks disposable email addresses from registration</li>
+</ul>
+
+<h2>
+<a id="user-actions" class="anchor" href="#user-actions" aria-hidden="true"><span class="octicon octicon-link"></span></a>User actions</h2>
+
+<ul>
+<li>Login</li>
+<li>Register</li>
+<li>Activate account</li>
+<li>Resend activation email</li>
+<li>Reset password</li>
+<li>Change password</li>
+<li>Change email address</li>
+<li>Delete account</li>
+<li>Logout</li>
+</ul>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>PHP 5.4</li>
+<li>MySQL / MariaDB database</li>
+<li>SMTP server / sendmail</li>
+<li>PHP Mcrypt</li>
+</ul>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>The database table <code>config</code> contains multiple parameters allowing you to configure certain functions of the class.</p>
+
+<ul>
+<li>
+<code>site_name</code>   : the name of the website to display in the activation and password reset emails</li>
+<li>
+<code>site_url</code>    : the URL of the Auth root, where you installed the system, without the trailing slash, used for emails.</li>
+<li>
+<code>site_email</code>  : the email address from which to send activation and password reset emails</li>
+<li>
+<code>site_key</code>    : a random string that you should modify used to validate cookies to ensure they are not tampered with</li>
+<li>
+<code>site_timezone</code> : the timezone for correct datetime values</li>
+<li>
+<code>site_activation_page</code> : the activation page name appended to the <code>site_url</code> in the activation email</li>
+<li>
+<code>site_password_reset_page</code> : the password reset page name appended to the <code>site_url</code> in the password reset email</li>
+<li>
+<code>cookie_name</code> : the name of the cookie that contains session information, do not change unless necessary</li>
+<li>
+<code>cookie_path</code> : the path of the session cookie, do not change unless necessary</li>
+<li>
+<code>cookie_domain</code> : the domain of the session cookie, do not change unless necessary</li>
+<li>
+<code>cookie_secure</code> : the HTTPS only setting of the session cookie, do not change unless necessary</li>
+<li>
+<code>cookie_http</code> : the HTTP only protocol setting of the session cookie, do not change unless necessary</li>
+<li>
+<code>cookie_remember</code> : the time that a user will remain logged in for when ticking "remember me" on login. Must respect PHP's <a href="http://php.net/manual/en/function.strtotime.php">strtotime</a> format.</li>
+<li>
+<code>cookie_forget</code> : the time a user will remain logged in when not ticking "remember me" on login.  Must respect PHP's <a href="http://php.net/manual/en/function.strtotime.php">strtotime</a> format.</li>
+<li>
+<code>bcrypt_cost</code> : the algorithmic cost of the bcrypt hashing function, can be changed based on hardware capabilities</li>
+<li>
+<code>smtp</code> : <code>0</code> to use sendmail for emails, <code>1</code> to use SMTP</li>
+<li>
+<code>smtp_host</code> : hostname of the SMTP server</li>
+<li>
+<code>smtp_auth</code> : <code>0</code> if the SMTP server doesn't require authentication, <code>1</code> if authentication is required</li>
+<li>
+<code>smtp_username</code> : the username for the SMTP server</li>
+<li>
+<code>smtp_password</code> : the password for the SMTP server</li>
+<li>
+<code>smtp_port</code> : the port for the SMTP server</li>
+<li>
+<code>smtp_security</code> : <code>NULL</code> for no encryption, <code>tls</code> for TLS encryption, <code>ssl</code> for SSL encryption</li>
+<li>
+<code>verify_password_min_length</code> : minimum password length, default is <code>3</code><br>
+</li>
+<li>
+<code>verify_password_max_length</code> : maximum password length, default is <code>150</code>
+</li>
+<li>
+<code>verify_password_strong_requirements</code> : use strong password requirments (at least one uppercase and lowercase character, and at least one digit), default is <code>1</code> (<code>true</code>) </li>
+<li>
+<code>verify_email_min_length</code> : minimum EMail length, default is <code>5</code>
+</li>
+<li>
+<code>verify_email_max_length</code> : maximum EMail length, default is <code>100</code>
+</li>
+<li>
+<code>verify_email_use_banlist</code> : use banlist while checking allowed EMails (see <code>/files/domains.json</code>), default is <code>1</code> (<code>true</code>) </li>
+</ul>
+
+<p>The rest of the parameters generally do not need changing.</p>
+
+<h2>
+<a id="how-to-secure-a-page" class="anchor" href="#how-to-secure-a-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to secure a page</h2>
+
+<p>Making a page accessible only to authenticated users is quick and easy, requiring only a few lines of code at the top of the page:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>languages/en_GB.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>config.class.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>auth.class.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$dbh</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PDO</span>(<span class="pl-s"><span class="pl-pds">"</span>mysql:host=localhost;dbname=phpauth<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$config</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PHPAuth\</span><span class="pl-c1">Config</span>(<span class="pl-smi">$dbh</span>);</span>
+<span class="pl-s1"><span class="pl-smi">$auth</span>   <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PHPAuth\</span><span class="pl-c1">Auth</span>(<span class="pl-smi">$dbh</span>, <span class="pl-smi">$config</span>, <span class="pl-smi">$lang</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">if</span> (<span class="pl-k">!</span><span class="pl-smi">$auth</span><span class="pl-k">-&gt;</span>isLogged()) {</span>
+<span class="pl-s1">    <span class="pl-c1">header</span>(<span class="pl-s"><span class="pl-pds">'</span>HTTP/1.0 403 Forbidden<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>Forbidden<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">exit</span>();</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>All class methods are documented in <a href="https://github.com/PHPAuth/PHPAuth/wiki/Class-Methods">the Wiki</a><br>
+System error codes are listed and explained <a href="https://github.com/PHPAuth/PHPAuth/wiki/System-error-codes">here</a></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (C) 2014 - 2015 PHPAuth</p>
+
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Anyone can contribute to improve or fix PHPAuth, to do so you can either report an issue (a bug, an idea...) or fork the repository, perform modifications to your fork then request a merge.</p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<ul>
+<li>
+<a href="https://github.com/ircmaxell/password_compat">password_compat</a> - <a href="https://github.com/ircmaxell" class="user-mention">@ircmaxell</a>
+</li>
+<li>
+<a href="https://github.com/lavab/disposable">disposable</a> - <a href="https://github.com/lavab" class="user-mention">@lavab</a>
+</li>
+<li>
+<a href="https://github.com/PHPMailer/PHPMailer">PHPMailer</a> - <a href="https://github.com/PHPMailer" class="user-mention">@PHPMailer</a>
+</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/PHPAuth/PHPAuth">PHPAuth</a> is maintained by <a href="https://github.com/PHPAuth">PHPAuth</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
