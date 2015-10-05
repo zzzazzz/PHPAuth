@@ -19,7 +19,9 @@
     </section>
 
     <section class="main-content">
-      <h1>
+      <p><a href="https://travis-ci.org/PHPAuth/PHPAuth"><img src="https://travis-ci.org/PHPAuth/PHPAuth.png" alt="Build Status"></a></p>
+
+<h1>
 <a id="phpauth" class="anchor" href="#phpauth" aria-hidden="true"><span class="octicon octicon-link"></span></a>PHPAuth</h1>
 
 <h2>
@@ -35,7 +37,7 @@
 <li>Uses <a href="http://en.wikipedia.org/wiki/Bcrypt">bcrypt</a> to hash passwords, a secure algorithm that uses an expensive key setup phase</li>
 <li>Uses an individual 128 bit salt for each user, pulled from /dev/urandom, making rainbow tables useless</li>
 <li>Uses PHP's <a href="http://php.net/manual/en/book.pdo.php">PDO</a> database interface and uses prepared statements meaning an efficient system, resilient against SQL injection</li>
-<li>Blocks attackers by IP for any defined time after any amount of failed actions on the portal</li>
+<li>Blocks (or verifies) attackers by IP for any defined time after any amount of failed actions on the portal</li>
 <li>No plain text passwords are sent or stored by the system</li>
 <li>Integrates easily into most existing websites, and can be a great starting point for new projects</li>
 <li>Easy configuration of multiple system parameters</li>
@@ -133,17 +135,61 @@
 <code>verify_email_max_length</code> : maximum EMail length, default is <code>100</code>
 </li>
 <li>
-<code>verify_email_use_banlist</code> : use banlist while checking allowed EMails (see <code>/files/domains.json</code>), default is <code>1</code> (<code>true</code>) </li>
+<code>verify_email_use_banlist</code> : use banlist while checking allowed EMails (see <code>/files/domains.json</code>), default is <code>1</code> (<code>true</code>)</li>
+<li>
+<code>attack_mitigation_time</code> : time used for rolling attempts timeout, default is <code>+30 minutes</code>. Must respect PHP's <a href="http://php.net/manual/en/function.strtotime.php">strtotime</a> format.</li>
+<li>
+<code>attempts_before_verify</code> : maximum amount of attempts to be made within <code>attack_mitigation_time</code> before requiring captcha. Default is <code>5</code>
+</li>
+<li>
+<code>attempt_before_block</code> : maximum amount of attempts to be made within <code>attack_mitigation_time</code> before temporally blocking the IP address. Defualt is <code>30</code>
+</li>
 </ul>
 
 <p>The rest of the parameters generally do not need changing.</p>
+
+<h2>
+<a id="captcha-implementation" class="anchor" href="#captcha-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>CAPTCHA Implementation</h2>
+
+<p>If <code>isBlocked()</code> returns <code>verify</code>, then a CAPTCHA code should be displayed.
+The method <code>checkCaptcha($captcha)</code> is called to verify a CAPTCHA code. By default this method returns <code>true</code>, but should be overridden to verify a CAPTCHA.</p>
+
+<p>For example, if you are using Google's ReCaptcha NoCaptcha, use the following code:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-k">private</span> <span class="pl-k">function</span> <span class="pl-en">checkCaptcha</span>(<span class="pl-smi">$captcha</span>)</span>
+<span class="pl-s1">    {</span>
+<span class="pl-s1"> <span class="pl-k">try</span> {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-smi">$url</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>https://www.google.com/recaptcha/api/siteverify<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">        <span class="pl-smi">$data</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>secret<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>your_secret_here<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>response<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$captcha</span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>remoteip<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$_SERVER</span>[<span class="pl-s"><span class="pl-pds">'</span>REMOTE_ADDR<span class="pl-pds">'</span></span>]];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-smi">$options</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>http<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>header<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>Content-type: application/x-www-form-urlencoded<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>method<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>POST<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">http_build_query</span>(<span class="pl-smi">$data</span>)</span>
+<span class="pl-s1">            ]</span>
+<span class="pl-s1">        ];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-smi">$context</span>  <span class="pl-k">=</span> <span class="pl-c1">stream_context_create</span>(<span class="pl-smi">$options</span>);</span>
+<span class="pl-s1">        <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-c1">file_get_contents</span>(<span class="pl-smi">$url</span>, <span class="pl-c1">false</span>, <span class="pl-smi">$context</span>);</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-c1">json_decode</span>(<span class="pl-smi">$result</span>)<span class="pl-k">-&gt;</span><span class="pl-smi">success</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-k">catch</span> (<span class="pl-c1">\</span><span class="pl-c1">Exception</span> <span class="pl-smi">$e</span>) {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-c1">false</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span></pre></div>
+
+<p>If a CAPTCHA is not to be used, please ensure to set <code>attempt_before_block</code> to the same value as <code>attempts_before_verify</code>.</p>
 
 <h2>
 <a id="how-to-secure-a-page" class="anchor" href="#how-to-secure-a-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to secure a page</h2>
 
 <p>Making a page accessible only to authenticated users is quick and easy, requiring only a few lines of code at the top of the page:</p>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>languages/en_GB.php<span class="pl-pds">"</span></span>);</span>
 <span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>config.class.php<span class="pl-pds">"</span></span>);</span>
