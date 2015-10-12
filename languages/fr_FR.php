@@ -71,4 +71,13 @@ $lang['email_reset_altbody'] = 'Bonjour,' . "\n\n" . 'Pour reinitialiser votre m
 
 $lang['account_deleted'] = "Compte supprimé.";
 
+$lang['group_name_empty'] = "Le nom du groupe est vide.";
+$lang['group_name_short'] = "Le nom du groupe est trop court.";
+$lang['group_name_long'] = "Le nom du groupe est trop long.";
+$lang['group_exists'] = "Un groupe avec ce nom existe d&eacute;j&agrave;.";
+$lang['group_cannot_delete'] = "Ce groupe ne peut pas &ecirc;tre supprim&eacute;.";
+$lang['group_not_exist'] = "Group inexistant.";
+$lang['user_not_exist'] = "Utilisateur inexistant.";
+$lang['user_group_same'] = "L'utilisateur est d&eacute;j&agrave; dans ce groupe.";
+
 ?>

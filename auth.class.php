@@ -361,7 +361,7 @@ class Auth
 
 		$data['cookie_crc'] = sha1($data['hash'] . $this->config->site_key);
 
-		$query = $this->dbh->prepare("INSERT INTO {$this->config->table_sessions} (uid, hash, expiredate, ip, agent, cookie_crc) VALUES (?, ?, ?, ?, ?, ?)");
+		$query = $this->dbh->prepare("INSERT INTO {$this->config->table_sessions} (userId, hash, expiryDate, ip, agent, cookieCrc) VALUES (?, ?, ?, ?, ?, ?)");
 
 		if(!$query->execute(array($uid, $data['hash'], $data['expire'], $ip, $agent, $data['cookie_crc']))) {
 			return false;
@@ -379,7 +379,7 @@ class Auth
 
 	private function deleteExistingSessions($uid)
 	{
-		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_sessions} WHERE uid = ?");
+		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_sessions} WHERE userId = ?");
 		$query->execute(array($uid));
 
 		return $query->rowCount() == 1;
@@ -418,7 +418,7 @@ class Auth
 			return false;
 		}
 
-		$query = $this->dbh->prepare("SELECT id, uid, expiredate, ip, agent, cookie_crc FROM {$this->config->table_sessions} WHERE hash = ?");
+		$query = $this->dbh->prepare("SELECT id, userId, expiryDate, ip, agent, cookieCrc FROM {$this->config->table_sessions} WHERE hash = ?");
 		$query->execute(array($hash));
 
 		if ($query->rowCount() == 0) {
@@ -460,7 +460,7 @@ class Auth
 
 	public function getSessionUID($hash)
 	{
-		$query = $this->dbh->prepare("SELECT uid FROM {$this->config->table_sessions} WHERE hash = ?");
+		$query = $this->dbh->prepare("SELECT userId FROM {$this->config->table_sessions} WHERE hash = ?");
 		$query->execute(array($hash));
 
 		if ($query->rowCount() == 0) {
@@ -540,7 +540,7 @@ class Auth
 			}, $customParamsQueryArray));
 		} else { $setParams = ''; }
 
-		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET email = ?, password = ?, isactive = ? {$setParams} WHERE id = ?");
+		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET email = ?, password = ?, isActive = ? {$setParams} WHERE id = ?");
 
 		$bindParams = array_values(array_merge(array($email, $password, $isactive), $params, array($uid)));
 
@@ -562,10 +562,10 @@ class Auth
 	* @return array $data
 	*/
 
-	private function getBaseUser($uid)
+	private function getBaseUser($userId)
 	{
 		$query = $this->dbh->prepare("SELECT email, password, isactive FROM {$this->config->table_users} WHERE id = ?");
-		$query->execute(array($uid));
+		$query->execute(array($userId));
 
 		if ($query->rowCount() == 0) {
 			return false;
@@ -577,7 +577,7 @@ class Auth
 			return false;
 		}
 
-		$data['uid'] = $uid;
+		$data['uid'] = $userId;
 		return $data;
 	}
 	
@@ -587,10 +587,10 @@ class Auth
 	* @return array $data
 	*/
 
-	public function getUser($uid)
+	public function getUser($userId)
 	{
 		$query = $this->dbh->prepare("SELECT * FROM {$this->config->table_users} WHERE id = ?");
-		$query->execute(array($uid));
+		$query->execute(array($userId));
 
 		if ($query->rowCount() == 0) {
 			return false;
@@ -602,7 +602,7 @@ class Auth
 			return false;
 		}
 
-		$data['uid'] = $uid;
+		$data['uid'] = $userId;
 		unset($data['password']);
 		return $data;
 	}	
@@ -658,14 +658,14 @@ class Auth
 			return $return;
 		}
 
-		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_sessions} WHERE uid = ?");
+		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_sessions} WHERE userId = ?");
 
 		if(!$query->execute(array($uid))) {
 			$return['message'] = $this->lang["system_error"] . " #06";
 			return $return;
 		}
 
-		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_requests} WHERE uid = ?");
+		$query = $this->dbh->prepare("DELETE FROM {$this->config->table_requests} WHERE userId = ?");
 
 		if(!$query->execute(array($uid))) {
 			$return['message'] = $this->lang["system_error"] . " #07";
@@ -712,7 +712,7 @@ class Auth
 			}
 		}			
 	
-		$query = $this->dbh->prepare("SELECT id, expire FROM {$this->config->table_requests} WHERE uid = ? AND type = ?");
+		$query = $this->dbh->prepare("SELECT id, expire FROM {$this->config->table_requests} WHERE userId = ? AND type = ?");
 		$query->execute(array($uid, $type));
 
 		if($query->rowCount() > 0) {
@@ -737,7 +737,7 @@ class Auth
 		$key = $this->getRandomKey(20);
 		$expire = date("Y-m-d H:i:s", strtotime("+1 day"));
 
-		$query = $this->dbh->prepare("INSERT INTO {$this->config->table_requests} (uid, rkey, expire, type) VALUES (?, ?, ?, ?)");
+		$query = $this->dbh->prepare("INSERT INTO {$this->config->table_requests} (userId, rkey, expire, type) VALUES (?, ?, ?, ?)");
 
 		if(!$query->execute(array($uid, $key, $expire, $type))) {
 			$return['message'] = $this->lang["system_error"] . " #09";
@@ -808,7 +808,7 @@ class Auth
 	{
 		$return['error'] = true;
 
-		$query = $this->dbh->prepare("SELECT id, uid, expire FROM {$this->config->table_requests} WHERE rkey = ? AND type = ?");
+		$query = $this->dbh->prepare("SELECT id, userId, expire FROM {$this->config->table_requests} WHERE rkey = ? AND type = ?");
 		$query->execute(array($key, $type));
 
 		if ($query->rowCount() === 0) {
@@ -1250,7 +1250,7 @@ class Auth
 
 		$attempt_expiredate = date("Y-m-d H:i:s", strtotime($this->config->attack_mitigation_time));
 
-        $query = $this->dbh->prepare("INSERT INTO {$this->config->table_attempts} (ip, expiredate) VALUES (?, ?)");
+        $query = $this->dbh->prepare("INSERT INTO {$this->config->table_attempts} (ip, expiryDate) VALUES (?, ?)");
         return $query->execute(array($ip, $attempt_expiredate));
 
 	}
@@ -1271,7 +1271,7 @@ class Auth
         }
 
 
-        $query = $this->dbh->prepare("SELECT id, expiredate FROM {$this->config->table_attempts} WHERE ip = ?");
+        $query = $this->dbh->prepare("SELECT id, expiryDate FROM {$this->config->table_attempts} WHERE ip = ?");
         $query->execute(array($ip));
 
         while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -1329,20 +1329,20 @@ class Auth
      * Returns current session hash
      * @return string
      */
-    public function getSessionHash(){
+    public function getSessionHash() {
         return $_COOKIE[$this->config->cookie_name];
     }
 
     /**
      * Compare user's password with given password
-     * @param int $userid
+     * @param int $userId
      * @param string $password_for_check
      * @return bool
      */
-    public function comparePasswords($userid, $password_for_check)
+    public function comparePasswords($userId, $password_for_check)
     {
         $query = $this->dbh->prepare("SELECT password FROM {$this->config->table_users} WHERE id = ?");
-        $query->execute(array($userid));
+        $query->execute(array($userId));
 
         if ($query->rowCount() == 0) {
             return false;
@@ -1355,5 +1355,133 @@ class Auth
         }
 
         return password_verify($password_for_check, $data['password']);
+    }
+
+    public function addGroup($name) {
+    	$return['error'] = true;
+
+    	// Is group name valid
+
+    	if(strlen($name) == 0) {
+    		$return['message'] = $this->lang["group_name_empty"];
+    		return $return;
+    	}
+
+    	if(strlen($name) < 5) {
+    		$return['message'] = $this->lang["group_name_short"];
+    		return $return;
+    	}
+
+    	if(strlen($name) > 30) {
+    		$return['message'] = $this->lang["group_name_long"];
+    		return $return;
+    	}
+
+    	// Strip HTML tags
+
+    	$name = htmlentities($name);
+
+    	// Does group name already exist
+
+    	$query = $this->dbh->prepare("SELECT * FROM groups WHERE name = ?");
+    	$query->execute(array($name));
+
+    	if($query->rowCount() != 0) {
+    		$return['message'] = $this->lang["group_exists"];
+    		return $return;
+    	}
+
+    	// Add new group
+
+    	$query = $this->dbh->prepare("INSERT INTO groups (name) VALUES (?)");
+    	
+    	if(!$query->execute(array($name))) {
+    		$return['message'] = $this->lang["system_error"];
+    		return $return;
+    	}
+
+    	$return['error'] = false;
+    	return $return;
+    }
+
+    public function getGroup($groupId) {
+    	$query = $this->dbh->prepare("SELECT * FROM groups WHERE id = ?");
+    	$query->execute(array($groupId));
+
+    	return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function deleteGroup($groupId) {
+    	$return['error'] = true;
+
+    	// Default group cannot be deleted
+
+    	if($groupId == 0) {
+    		$return['message'] = $this->lang["group_cannot_delete"];
+    		return $return;
+    	}
+    	
+    	$group = $this->getGroup($groupId);
+
+    	if(!$group) {
+    		$return['message'] = $this->lang["group_not_exist"];
+    		return $return;
+    	}
+
+    	// Move users from this group to default group
+
+    	$query = $this->dbh->prepare("UPDATE users SET groupId = ? WHERE groupId = ?");
+    	
+    	if(!$query->execute(array(0, $groupId))) {
+			$return['message'] = $this->lang["system_error"];
+    		return $return;
+    	}
+
+    	// Delete group
+
+    	$query = $this->dbh->prepare("DELETE FROM groups WHERE id = ?");
+
+    	if(!$query->execute(array($groupId))) {
+			$return['message'] = $this->lang["system_error"];
+    		return $return;
+    	}
+
+    	$return['error'] = false;
+    	return $return;
+    }
+
+    public function setUserGroup($userId, $groupId) {
+    	$return['error'] = true;
+
+    	$group = $this->getGroup($groupId);
+
+    	if(!$group) {
+    		$return['message'] = $this->lang["group_not_exist"];
+    		return $return;
+    	}
+
+    	$user = $this->getUser($userId);
+
+    	if(!$user) {
+    		$return['message'] = $this->lang["user_not_exist"];
+    		return $return;
+    	}
+
+    	// Check if user is not already in this group
+
+    	if($user['groupId'] == $groupId) {
+    		$return['message'] = $this->lang["user_group_same"];
+    		return $return;
+    	}
+
+    	$query = $this->dbh->prepare("UPDATE users SET groupId = ? WHERE id = ?");
+    	
+    	if(!$query->execute(array($groupId, $userId))) {
+    		$return['message'] = $this->lang["system_error"];
+    		return $return;
+    	}
+
+    	$return['error'] = false;
+    	return $return;
     }
 }

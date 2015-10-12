@@ -71,4 +71,13 @@ $lang['email_reset_altbody'] = 'Hello, ' . "\n\n" . 'To reset your password plea
 
 $lang['account_deleted'] = "Account deleted successfully.";
 
+$lang['group_name_empty'] = "Group name field is empty.";
+$lang['group_name_short'] = "Group name is too short.";
+$lang['group_name_long'] = "Group name is too long.";
+$lang['group_exists'] = "A group with that name already exists.";
+$lang['group_cannot_delete'] = "This group cannot be deleted.";
+$lang['group_not_exist'] = "Group does not exist.";
+$lang['user_not_exist'] = "User does not exist.";
+$lang['user_group_same'] = "The user is already in this group.";
+
 ?>

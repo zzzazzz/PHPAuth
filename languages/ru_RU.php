@@ -71,3 +71,14 @@ $lang['email_reset_body'] = 'Здравствуйте,<br/><br/>Для сбро�
 $lang['email_reset_altbody'] = 'Здравствуйте, \n\n Для сброса вашего пароля пройдите пожалуйста по этой ссылке: \n %1$s/%2$s\n\n Вам нужно будет использовать следующий ключ для сброса пароля: %3$s\n\n Если вы недавно не запрашивали сброс пароля на сайте %1$s, значит это сообщение вы получили по ошибке. Пожалуйста, проигнорируйте его.';
 
 $lang['account_deleted'] = "Учётная запись удалена.";
+
+$lang['group_name_empty'] = "Group name field is empty.";
+$lang['group_name_short'] = "Group name is too short.";
+$lang['group_name_long'] = "Group name is too long.";
+$lang['group_exists'] = "A group with that name already exists.";
+$lang['group_cannot_delete'] = "This group cannot be deleted.";
+$lang['group_not_exist'] = "Group does not exist.";
+$lang['user_not_exist'] = "User does not exist.";
+$lang['user_group_same'] = "The user is already in this group.";
+
+?>
