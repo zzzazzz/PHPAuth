@@ -1275,7 +1275,7 @@ class Auth
         $query->execute(array($ip));
 
         while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $expiredate = strtotime($row['expiredate']);
+            $expiredate = strtotime($row['expiryDate']);
             $currentdate = strtotime(date("Y-m-d H:i:s"));
             if($currentdate > $expiredate)
             {
