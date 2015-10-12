@@ -105,7 +105,7 @@ class Auth
 			return $return;
 		}
 
-		$sessiondata = $this->addSession($user['uid'], $remember);
+		$sessiondata = $this->addSession($user['userId'], $remember);
 
 		if($sessiondata == false) {
 			$return['message'] = $this->lang["system_error"] . " #01";
@@ -219,7 +219,7 @@ class Auth
 			return $return;
 		}
 
-		if($this->getBaseUser($getRequest['uid'])['isActive'] == 1) {
+		if($this->getBaseUser($getRequest['userId'])['isActive'] == 1) {
 			$this->addAttempt();
 			$this->deleteRequest($getRequest['id']);
 
@@ -228,7 +228,7 @@ class Auth
 		}
 
 		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET isActive = ? WHERE id = ?");
-		$query->execute(array(1, $getRequest['uid']));
+		$query->execute(array(1, $getRequest['userId']));
 
 		$this->deleteRequest($getRequest['id']);
 
@@ -428,7 +428,7 @@ class Auth
 		$row = $query->fetch(\PDO::FETCH_ASSOC);
 
 		$sid = $row['id'];
-		$uid = $row['uid'];
+		$uid = $row['userId'];
 		$expiredate = strtotime($row['expiryDate']);
 		$currentdate = strtotime(date("Y-m-d H:i:s"));
 		$db_ip = $row['ip'];
@@ -467,7 +467,7 @@ class Auth
 			return false;
 		}
 
-		return $query->fetch(\PDO::FETCH_ASSOC)['uid'];
+		return $query->fetch(\PDO::FETCH_ASSOC)['userId'];
 	}
 
 	/**
@@ -577,7 +577,7 @@ class Auth
 			return false;
 		}
 
-		$data['uid'] = $userId;
+		$data['userId'] = $userId;
 		return $data;
 	}
 	
@@ -602,7 +602,7 @@ class Auth
 			return false;
 		}
 
-		$data['uid'] = $userId;
+		$data['userId'] = $userId;
 		unset($data['password']);
 		return $data;
 	}	
@@ -834,7 +834,7 @@ class Auth
 
 		$return['error'] = false;
 		$return['id'] = $row['id'];
-		$return['uid'] = $row['uid'];
+		$return['userId'] = $row['userId'];
 
 		return $return;
 	}
@@ -963,7 +963,7 @@ class Auth
 			return $return;
 		}
 
-		$user = $this->getBaseUser($data['uid']);
+		$user = $this->getBaseUser($data['userId']);
 
 		if(!$user) {
 			$this->addAttempt();
@@ -983,7 +983,7 @@ class Auth
 		$password = $this->getHash($password);
 
 		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET password = ? WHERE id = ?");
-		$query->execute(array($password, $data['uid']));
+		$query->execute(array($password, $data['userId']));
 
 		if ($query->rowCount() == 0) {
 			$return['message'] = $this->lang["system_error"] . " #12";
