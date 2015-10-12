@@ -68,7 +68,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 	public function testCheckSession()
 	{
 		// Get the user's (created and logged in as earlier) session hash
-		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE uid = (SELECT id FROM users WHERE email = 'test@email.com');", PDO::FETCH_ASSOC)->fetch()['hash'];
+		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE userId = (SELECT id FROM users WHERE email = 'test@email.com');", PDO::FETCH_ASSOC)->fetch()['hash'];
 
 		// Successful checkSession
 		$this->assertTrue($this->auth->checkSession($hash));
@@ -87,7 +87,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 	public function testGetSessionUID()
 	{
 		$uid = $this->dbh->query("SELECT id FROM users WHERE email = 'test@email.com';", PDO::FETCH_ASSOC)->fetch()['id'];
-		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE uid = {$uid};", PDO::FETCH_ASSOC)->fetch()['hash'];
+		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE userId = {$uid};", PDO::FETCH_ASSOC)->fetch()['hash'];
 
 		// Successful getSessionUID
 		$this->assertEquals($uid, $this->auth->getSessionUID($hash));
@@ -188,7 +188,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
 	public function testLogout()
 	{
 		// Get the user's (created and logged in as earlier) session hash
-		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE uid = (SELECT id FROM users WHERE email = 'test2@email.com');", PDO::FETCH_ASSOC)->fetch()['hash'];
+		$hash = $this->dbh->query("SELECT hash FROM sessions WHERE userId = (SELECT id FROM users WHERE email = 'test2@email.com');", PDO::FETCH_ASSOC)->fetch()['hash'];
 
 		// Successful logout
 		$this->assertTrue($this->auth->logout($hash));
