@@ -98,7 +98,7 @@ class Auth
 			return $return;
 		}
 
-		if ($user['isactive'] != 1) {
+		if ($user['isActive'] != 1) {
 			$this->addAttempt();
 
 			$return['message'] = $this->lang["account_inactive"];
@@ -219,7 +219,7 @@ class Auth
 			return $return;
 		}
 
-		if($this->getBaseUser($getRequest['uid'])['isactive'] == 1) {
+		if($this->getBaseUser($getRequest['uid'])['isActive'] == 1) {
 			$this->addAttempt();
 			$this->deleteRequest($getRequest['id']);
 
@@ -227,7 +227,7 @@ class Auth
 			return $return;
 		}
 
-		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET isactive = ? WHERE id = ?");
+		$query = $this->dbh->prepare("UPDATE {$this->config->table_users} SET isActive = ? WHERE id = ?");
 		$query->execute(array(1, $getRequest['uid']));
 
 		$this->deleteRequest($getRequest['id']);
@@ -429,7 +429,7 @@ class Auth
 
 		$sid = $row['id'];
 		$uid = $row['uid'];
-		$expiredate = strtotime($row['expiredate']);
+		$expiredate = strtotime($row['expiryDate']);
 		$currentdate = strtotime(date("Y-m-d H:i:s"));
 		$db_ip = $row['ip'];
 		$db_agent = $row['agent'];
@@ -564,7 +564,7 @@ class Auth
 
 	private function getBaseUser($userId)
 	{
-		$query = $this->dbh->prepare("SELECT email, password, isactive FROM {$this->config->table_users} WHERE id = ?");
+		$query = $this->dbh->prepare("SELECT email, password, isActive FROM {$this->config->table_users} WHERE id = ?");
 		$query->execute(array($userId));
 
 		if ($query->rowCount() == 0) {
@@ -729,7 +729,7 @@ class Auth
 			$this->deleteRequest($row['id']);
 		}
 
-		if($type == "activation" && $this->getBaseUser($uid)['isactive'] == 1) {
+		if($type == "activation" && $this->getBaseUser($uid)['isActive'] == 1) {
 			$return['message'] = $this->lang["already_activated"];
 			return $return;
 		}
@@ -1032,7 +1032,7 @@ class Auth
 
 		$row = $query->fetch(\PDO::FETCH_ASSOC);
 
-		if ($this->getBaseUser($row['id'])['isactive'] == 1) {
+		if ($this->getBaseUser($row['id'])['isActive'] == 1) {
 			$this->addAttempt();
 
 			$return['message'] = $this->lang["already_activated"];
