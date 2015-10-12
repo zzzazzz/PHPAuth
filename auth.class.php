@@ -359,11 +359,11 @@ class Auth
 			$data['expiretime'] = 0;
 		}
 
-		$data['cookie_crc'] = sha1($data['hash'] . $this->config->site_key);
+		$data['cookieCrc'] = sha1($data['hash'] . $this->config->site_key);
 
 		$query = $this->dbh->prepare("INSERT INTO {$this->config->table_sessions} (userId, hash, expiryDate, ip, agent, cookieCrc) VALUES (?, ?, ?, ?, ?, ?)");
 
-		if(!$query->execute(array($uid, $data['hash'], $data['expire'], $ip, $agent, $data['cookie_crc']))) {
+		if(!$query->execute(array($uid, $data['hash'], $data['expire'], $ip, $agent, $data['cookieCrc']))) {
 			return false;
 		}
 
@@ -433,7 +433,7 @@ class Auth
 		$currentdate = strtotime(date("Y-m-d H:i:s"));
 		$db_ip = $row['ip'];
 		$db_agent = $row['agent'];
-		$db_cookie = $row['cookie_crc'];
+		$db_cookie = $row['cookieCrc'];
 
 		if ($currentdate > $expiredate) {
 			$this->deleteExistingSessions($uid);
