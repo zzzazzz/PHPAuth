@@ -19,7 +19,7 @@
     </section>
 
     <section class="main-content">
-      <p><a href="https://travis-ci.org/PHPAuth/PHPAuth"><img src="https://travis-ci.org/PHPAuth/PHPAuth.png" alt="Build Status"></a></p>
+      <p><a href="https://api.travis-ci.org/PHPAuth/PHPAuth"><img src="https://api.travis-ci.org/PHPAuth/PHPAuth.png" alt="Build Status"></a></p>
 
 <h1>
 <a id="phpauth" class="anchor" href="#phpauth" aria-hidden="true"><span class="octicon octicon-link"></span></a>PHPAuth</h1>
@@ -65,10 +65,17 @@
 
 <ul>
 <li>PHP 5.4</li>
-<li>MySQL / MariaDB database</li>
-<li>SMTP server / sendmail</li>
-<li>PHP Mcrypt</li>
+<li>MySQL / MariaDB database or PostGreSQL database</li>
 </ul>
+
+<h2>
+<a id="composer-support" class="anchor" href="#composer-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Composer Support</h2>
+
+<p>PHPAuth can now be installed with the following command:</p>
+
+<p><code>composer require phpauth/phpauth</code></p>
+
+<p>Then: <code>require 'vendor/autoload.php';</code></p>
 
 <h2>
 <a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
@@ -127,7 +134,7 @@
 <code>verify_password_max_length</code> : maximum password length, default is <code>150</code>
 </li>
 <li>
-<code>verify_password_strong_requirements</code> : use strong password requirments (at least one uppercase and lowercase character, and at least one digit), default is <code>1</code> (<code>true</code>) </li>
+<code>verify_password_strong_requirements</code> : use strong password requirments (at least one uppercase and lowercase character, and at least one digit), default is <code>1</code> (<code>true</code>)</li>
 <li>
 <code>verify_email_min_length</code> : minimum EMail length, default is <code>5</code>
 </li>
@@ -142,7 +149,10 @@
 <code>attempts_before_verify</code> : maximum amount of attempts to be made within <code>attack_mitigation_time</code> before requiring captcha. Default is <code>5</code>
 </li>
 <li>
-<code>attempt_before_block</code> : maximum amount of attempts to be made within <code>attack_mitigation_time</code> before temporally blocking the IP address. Defualt is <code>30</code>
+<code>attempt_before_block</code> : maximum amount of attempts to be made within <code>attack_mitigation_time</code> before temporally blocking the IP address. Default is <code>30</code>
+</li>
+<li>
+<code>password_min_score</code> : the minimum score given by <a href="https://github.com/bjeavons/zxcvbn-php">zxcvbn</a> that is allowed. Default is <code>3</code>
 </li>
 </ul>
 
@@ -191,14 +201,13 @@ The method <code>checkCaptcha($captcha)</code> is called to verify a CAPTCHA cod
 
 <div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
 <span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>languages/en_GB.php<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>config.class.php<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>auth.class.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>Config.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">include</span>(<span class="pl-s"><span class="pl-pds">"</span>Auth.php<span class="pl-pds">"</span></span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-smi">$dbh</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PDO</span>(<span class="pl-s"><span class="pl-pds">"</span>mysql:host=localhost;dbname=phpauth<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-smi">$config</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PHPAuth\</span><span class="pl-c1">Config</span>(<span class="pl-smi">$dbh</span>);</span>
-<span class="pl-s1"><span class="pl-smi">$auth</span>   <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PHPAuth\</span><span class="pl-c1">Auth</span>(<span class="pl-smi">$dbh</span>, <span class="pl-smi">$config</span>, <span class="pl-smi">$lang</span>);</span>
+<span class="pl-s1"><span class="pl-smi">$auth</span>   <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PHPAuth\</span><span class="pl-c1">Auth</span>(<span class="pl-smi">$dbh</span>, <span class="pl-smi">$config</span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">if</span> (<span class="pl-k">!</span><span class="pl-smi">$auth</span><span class="pl-k">-&gt;</span>isLogged()) {</span>
 <span class="pl-s1">    <span class="pl-c1">header</span>(<span class="pl-s"><span class="pl-pds">'</span>HTTP/1.0 403 Forbidden<span class="pl-pds">'</span></span>);</span>
@@ -210,21 +219,33 @@ The method <code>checkCaptcha($captcha)</code> is called to verify a CAPTCHA cod
 <span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
 
 <h2>
+<a id="message-languages" class="anchor" href="#message-languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Message languages</h2>
+
+<p>The language for error and success messages returned by PHPAuth can be configured by passing in one of
+the available languages as the third parameter to the Auth constructor. If no language parameter is provided
+then the default <code>en_GB</code>language is used.</p>
+
+<p>Example: <code>$auth   = new PHPAuth\Auth($dbh, $config, "fr_FR");</code></p>
+
+<p>Available languages:</p>
+
+<ul>
+<li>
+<code>en_GB</code> (Default)</li>
+<li><code>de_DE</code></li>
+<li><code>fa_IR</code></li>
+<li><code>fr_FR</code></li>
+<li><code>it_IT</code></li>
+<li><code>nl_BE</code></li>
+<li><code>pt_BR</code></li>
+<li><code>ru_RU</code></li>
+</ul>
+
+<h2>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
 <p>All class methods are documented in <a href="https://github.com/PHPAuth/PHPAuth/wiki/Class-Methods">the Wiki</a><br>
 System error codes are listed and explained <a href="https://github.com/PHPAuth/PHPAuth/wiki/System-error-codes">here</a></p>
-
-<h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
-
-<p>Copyright (C) 2014 - 2015 PHPAuth</p>
-
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-
-<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
 
 <h2>
 <a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
@@ -243,6 +264,9 @@ System error codes are listed and explained <a href="https://github.com/PHPAuth/
 </li>
 <li>
 <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer</a> - <a href="https://github.com/PHPMailer" class="user-mention">@PHPMailer</a>
+</li>
+<li>
+<a href="https://github.com/bjeavons/zxcvbn-php">zxcvbn-php</a> - <a href="https://github.com/bjeavons" class="user-mention">@bjeavons</a>
 </li>
 </ul>
 
