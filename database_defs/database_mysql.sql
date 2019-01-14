@@ -68,10 +68,8 @@ INSERT INTO `phpauth_config` (`setting`, `value`) VALUES
 
 DROP TABLE IF EXISTS `phpauth_attempts`;
 CREATE TABLE `phpauth_attempts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` char(39) NOT NULL,
   `expiredate` datetime NOT NULL,
-  PRIMARY KEY (`id`),
   KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

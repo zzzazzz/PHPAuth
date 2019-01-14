@@ -1460,6 +1460,8 @@ VALUES (:uid, :hash, :expiredate, :ip, :agent, :cookie_crc)
     public function isBlocked()
     {
         $ip = $this->getIp();
+
+        // TODO: This should be done in a cronjob
         $this->deleteAttempts($ip, false);
 
         // INET_ATON
@@ -1487,6 +1489,7 @@ VALUES (:uid, :hash, :expiredate, :ip, :agent, :cookie_crc)
      */
     protected function checkCaptcha($captcha)
     {
+        // TODO: Why does this method exist ?
         return true;
     }
 
