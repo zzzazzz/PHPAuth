@@ -8,10 +8,10 @@ $dbh = new \PDO("mysql:host=localhost;dbname=...", "...", "...."); // set your a
 $dbh_table = 'phpauth_translation_dictionary'; // import table target
 
 $langs = [
-    'ar_TN', 'cs_CZ', 'da_DK', 'de_DE', 'en_GB', 'es_MX', 'fa_IR', 'fr_FR', 'gr_GR',
-    'hu_HU', 'id_ID', 'it_IT', 'nl_BE', 'nl_NL', 'no_NB', 'pl_PL', 'ps_AF', 'pt_BR',
-    'ro_RO', 'ru_RU', 'se_SE', 'sk_SK', 'sl_SI', 'sr_RS', 'th_TH', 'tr_TR', 'uk_UA',
-    'vi_VN'
+    'ar_TN', 'br_FR', 'cs_CZ', 'da_DK', 'de_DE', 'en_GB', 'es_MX', 'fa_IR', 'fr_FR',
+    'gr_GR', 'hu_HU', 'id_ID', 'it_IT', 'nl_BE', 'nl_NL', 'no_NB', 'pl_PL', 'ps_AF',
+    'pt_BR', 'ro_RO', 'ru_RU', 'se_SE', 'sk_SK', 'sl_SI', 'sr_RS', 'th_TH', 'tr_TR',
+    'uk_UA', 'vi_VN'
 ];
 
 
@@ -44,4 +44,3 @@ UPDATE `{$l}` = :message
 
     unset($lang);
 }
-
