@@ -60,12 +60,12 @@ $lang['activation_sent'] = "Kaset eo bet ar postel gweredekaat.";
 $lang['activation_exists'] = "Kaset eo bet dija ar postel gweredekaat.";
 
 $lang['email_activation_subject'] = '%s – Lañsañ ar gont';
-$lang['email_activation_body'] = 'Mat ar jeu ?<br><br>Evit mont war ho kont eo ret deoc’h krouiñ  anezhi da vat en ur glikañ war al liamm-mañ : :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Ret vo deoc’h implijout an alc’hwez lañsañ-mañ :  <strong>%3$s</strong><br/><br/>\n Ma ne fell ket deoc’h enrollañ ho kont na rit ket van eus ar gemennadenn-mañ.';
-$lang['email_activation_altbody'] = "Mat ar jeu ?" . "\n\n" . 'Evit mont war ho kont eo ret deoc’h krouiñ anezhi da vat  en ur glikañ war al liamm-mañ : :%1$s/%2$s  Ret vo deoc’h implijout an alc’hwez lañsañ-mañ :   %3$s Ma ne fell ket deoc’h en em enrollañ war %1$s na rit ket van eus ar gemennadenn-mañ.';
+$lang['email_activation_body'] = 'Mat ar jeu ?<br><br>Klikañ war al liamm da heul evit ma vefe kadarnaet ho kont :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Setu ho kod evit lañsañ an traoù : <strong>%3$s</strong><br/><br/>\n Na daolit ket evezh ouzh ar gemennadenn-mañ ma ne fell ket deoc’h kadarnaat ho kont.';
+$lang['email_activation_altbody'] = "Mat ar jeu ?" . "\n\n" . 'Klikañ war al liamm da heul evit ma vefe kadarnaet ho kont :%1$s/%2$s  Setu ho kod evit lañsañ an traoù :   %3$s Ma ne fell ket deoc’h en em enrollañ war %1$s na rit ket van eus ar gemennadenn-mañ.';
 
 $lang['email_reset_subject'] = '%s - Adnevezañ ar ger-tremen';
-$lang['email_reset_body'] = 'Mat ar jeu ? <br/><br/> Evit adnevesaat ho ker-tremen eo ret deoc’h klikañ war al liamm-mañ :<br/><br/><strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Ret vo deoc’h implijout an alc’hwez-mañ evit adnevesaat ho ker-tremen : <strong>%3$s</strong><br/><br/> Ma n’ho peus ket goulennet e vefe adnevesaet ho ker-tremen na rit ket van eus ar gemennadenn-mañ.';
-$lang['email_reset_altbody'] = 'Mat ar jeu ?' . "\n\n" . 'Evit adnevesaat ho ker-tremen eo ret deoc’h klikañ war al liamm-mañ :' . "\n" . '%1$s/%2$s' . "\n\n" . 'Ret vo deoc’h implijout an alc’hwez-mañ evit adnevesaat ho ker-tremen evit ar chomlec’h-mañ :  %1$s' . "\n\n" . 'Ma n’ho peus ket goulennet e vefe adnevesaet ho ker-tremen na rit ket van eus ar gemennadenn-mañ.';
+$lang['email_reset_body'] = 'Mat ar jeu ? <br/><br/> Evit adnevesaat ho ker-tremen eo ret deoc’h klikañ war al liamm-mañ :<br/><br/><strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Ret vo deoc’h implijout ar c’hod-mañ evit adnevesaat ho ker-tremen : <strong>%3$s</strong><br/><br/> Ma n’ho peus ket goulennet e vefe adnevesaet ho ker-tremen na rit ket van eus ar gemennadenn-mañ.';
+$lang['email_reset_altbody'] = 'Mat ar jeu ?' . "\n\n" . 'Evit adnevesaat ho ker-tremen eo ret deoc’h klikañ war al liamm-mañ :' . "\n" . '%1$s/%2$s' . "\n\n" . 'Ret vo deoc’h implijout ar c’hod-mañ evit adnevesaat ho ker-tremen evit ar chomlec’h-mañ :  %1$s' . "\n\n" . 'Ma n’ho peus ket goulennet e vefe adnevesaet ho ker-tremen na rit ket van eus ar gemennadenn-mañ.';
 
 $lang['account_deleted'] = "Lamet eo ar gont.";
 $lang['function_disabled'] = "Lamet eo bet an doare-mañ d’ober.";
