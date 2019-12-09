@@ -60,7 +60,7 @@ $lang['activation_sent'] = "Kaset eo bet ar postel gweredekaat.";
 $lang['activation_exists'] = "Kaset eo bet dija ar postel gweredekaat.";
 
 $lang['email_activation_subject'] = '%s – Lañsañ ar gont';
-$lang['email_activation_body'] = 'Mat ar jeu ?<br><br>Klikañ war al liamm da heul evit ma vefe kadarnaet ho kont :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Setu ho kod evit lañsañ an traoù : <strong>%3$s</strong><br/><br/>\n Na daolit ket evezh ouzh ar gemennadenn-mañ ma ne fell ket deoc’h kadarnaat ho kont.';
+$lang['email_activation_body'] = 'Mat ar jeu ?<br><br>Klikañ war al liamm da heul evit ma vefe kadarnaet ho kont :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/> Setu ho kod evit lañsañ an traoù : <strong>%3$s</strong><br/><br/> Na daolit ket evezh ouzh ar gemennadenn-mañ ma ne fell ket deoc’h kadarnaat ho kont.';
 $lang['email_activation_altbody'] = "Mat ar jeu ?" . "\n\n" . 'Klikañ war al liamm da heul evit ma vefe kadarnaet ho kont :%1$s/%2$s  Setu ho kod evit lañsañ an traoù :   %3$s Ma ne fell ket deoc’h en em enrollañ war %1$s na rit ket van eus ar gemennadenn-mañ.';
 
 $lang['email_reset_subject'] = '%s - Adnevezañ ar ger-tremen';

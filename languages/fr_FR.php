@@ -60,7 +60,7 @@ $lang['activation_sent'] = "L'email d'activation a bien &eacute;t&eacute; envoy&
 $lang['activation_exists'] = "L'email d'activation a d&eacute;j&agrave; &eacute;t&eacute; envoy&eacute;.";
 
 $lang['email_activation_subject'] = '%s - Activation de compte';
-$lang['email_activation_body'] = 'Bonjour,<br/><br/> Pour pouvoir vous connecter vous devez d\'abord activer votre compte en cliquant sur le lien suivant :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/>Vous devrez utiliser cette clé d\'activation : <strong>%3$s</strong><br/><br/>\n Si vous ne souhaitez pas vous enregistrer sur %1$s vous pouvez ignorer ce message.';
+$lang['email_activation_body'] = 'Bonjour,<br/><br/> Pour pouvoir vous connecter vous devez d\'abord activer votre compte en cliquant sur le lien suivant :<strong><a href="%1$s/%2$s">%1$s/%2$s</a></strong><br/><br/>Vous devrez utiliser cette clé d\'activation : <strong>%3$s</strong><br/><br/> Si vous ne souhaitez pas vous enregistrer sur %1$s vous pouvez ignorer ce message.';
 $lang['email_activation_altbody'] = 'Bonjour,' . "\n\n" . 'Pour pouvoir vous connecter vous devez d\'abord activer votre compte en cliquant sur le lien suivant :' . "\n" . '%1$s/%2$s' . "\n\n" . 'Vous devrez utiliser cette clé d\'activation : %3$s' . "\n\n" . 'Si vous ne souhaitez pas vous enregistrer sur %1$s vous pouvez ignorer ce message.';
 
 $lang['email_reset_subject'] = '%s - Reinitialisation du mot de passe';
